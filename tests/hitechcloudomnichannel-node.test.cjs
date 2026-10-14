@@ -51,8 +51,8 @@ test('HiTechCloudOmnichannel node exposes a generic "API Call" operation under C
 	);
 });
 
-test('HiTechCloudOmnichannel node requires the HiTechCloudOmnichannelApi credential', () => {
+test('HiTechCloudOmnichannel node requires the hiTechCloudOmnichannelApi credential', () => {
 	const node = new HiTechCloudOmnichannel();
 
-	assert.deepEqual(node.description.credentials, [{ name: 'HiTechCloudOmnichannelApi', required: true }]);
+	assert.deepEqual(node.description.credentials, [{ name: 'hiTechCloudOmnichannelApi', required: true }]);
 });

@@ -10,7 +10,7 @@ import type {
 	JsonObject,
 } from 'n8n-workflow';
 import { NodeApiError, NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
-import { HiTechCloudOmnichannelApiRequest } from './api';
+import { hiTechCloudOmnichannelApiRequest } from './api';
 
 const contactOperationOptions = [
 	{ name: 'Add Tags', value: 'addTags', action: 'Add tags to a contact' },
@@ -61,7 +61,7 @@ const identifierField = {
 export class HiTechCloudOmnichannel implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'HiTechCloudOmnichannel',
-		name: 'HiTechCloudOmnichannel',
+		name: 'hiTechCloudOmnichannel',
 		icon: { light: 'file:icons/hitechcloudomnichannel.png', dark: 'file:icons/hitechcloudomnichannel.dark.png' },
 		group: ['transform'],
 		version: 1,
@@ -75,7 +75,7 @@ export class HiTechCloudOmnichannel implements INodeType {
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
-				name: 'HiTechCloudOmnichannelApi',
+				name: 'hiTechCloudOmnichannelApi',
 				required: true,
 			},
 		],
@@ -402,7 +402,7 @@ export class HiTechCloudOmnichannel implements INodeType {
 	methods = {
 		loadOptions: {
 			async getTags(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				const response = (await HiTechCloudOmnichannelApiRequest.call(this, 'GET', '/v1/tags')) as IDataObject;
+				const response = (await hiTechCloudOmnichannelApiRequest.call(this, 'GET', '/v1/tags')) as IDataObject;
 				const tags = (response.data ?? []) as IDataObject[];
 				return tags.map((tag) => ({
 					name: tag.name as string,
@@ -411,7 +411,7 @@ export class HiTechCloudOmnichannel implements INodeType {
 			},
 
 			async getInboxes(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				const response = (await HiTechCloudOmnichannelApiRequest.call(this, 'GET', '/v1/inboxes')) as IDataObject;
+				const response = (await hiTechCloudOmnichannelApiRequest.call(this, 'GET', '/v1/inboxes')) as IDataObject;
 				const inboxes = (response.data ?? []) as IDataObject[];
 				return inboxes.map((inbox) => ({
 					name: (inbox.name as string) ?? (inbox.id as string),
@@ -502,7 +502,7 @@ async function executeContactOperation(
 			if (keyword) {
 				qs.keyword = keyword;
 			}
-			const response = (await HiTechCloudOmnichannelApiRequest.call(
+			const response = (await hiTechCloudOmnichannelApiRequest.call(
 				this,
 				'GET',
 				'/v1/contacts',
@@ -514,7 +514,7 @@ async function executeContactOperation(
 
 		case 'get': {
 			const identifier = normalizeIdentifier(this.getNodeParameter('identifier', i) as string);
-			return (await HiTechCloudOmnichannelApiRequest.call(
+			return (await hiTechCloudOmnichannelApiRequest.call(
 				this,
 				'GET',
 				`/v1/contacts/${encodeURIComponent(identifier)}`,
@@ -534,13 +534,13 @@ async function executeContactOperation(
 			if (phoneNumber) body.phoneNumber = phoneNumber;
 			if (firstName) body.firstName = firstName;
 			if (lastName) body.lastName = lastName;
-			return (await HiTechCloudOmnichannelApiRequest.call(this, 'POST', '/v1/contacts', body)) as IDataObject;
+			return (await hiTechCloudOmnichannelApiRequest.call(this, 'POST', '/v1/contacts', body)) as IDataObject;
 		}
 
 		case 'upsert': {
 			const identifier = normalizeIdentifier(this.getNodeParameter('identifier', i) as string);
 			const additionalFields = this.getNodeParameter('additionalFields', i, {}) as IDataObject;
-			return (await HiTechCloudOmnichannelApiRequest.call(
+			return (await hiTechCloudOmnichannelApiRequest.call(
 				this,
 				'POST',
 				`/v1/contacts/${encodeURIComponent(identifier)}/upsert`,
@@ -550,7 +550,7 @@ async function executeContactOperation(
 
 		case 'delete': {
 			const identifier = normalizeIdentifier(this.getNodeParameter('identifier', i) as string);
-			await HiTechCloudOmnichannelApiRequest.call(
+			await hiTechCloudOmnichannelApiRequest.call(
 				this,
 				'DELETE',
 				`/v1/contacts/${encodeURIComponent(identifier)}`,
@@ -561,7 +561,7 @@ async function executeContactOperation(
 		case 'findByCustomField': {
 			const customFieldId = this.getNodeParameter('customFieldId', i) as string;
 			const value = this.getNodeParameter('value', i) as string;
-			const response = (await HiTechCloudOmnichannelApiRequest.call(
+			const response = (await hiTechCloudOmnichannelApiRequest.call(
 				this,
 				'GET',
 				'/v1/contacts/find-by-custom-field',
@@ -578,7 +578,7 @@ async function executeContactOperation(
 				customFieldId: field.customFieldId,
 				value: field.value,
 			}));
-			await HiTechCloudOmnichannelApiRequest.call(
+			await hiTechCloudOmnichannelApiRequest.call(
 				this,
 				'PUT',
 				`/v1/contacts/${encodeURIComponent(identifier)}/custom-fields`,
@@ -590,7 +590,7 @@ async function executeContactOperation(
 		case 'deleteCustomField': {
 			const identifier = normalizeIdentifier(this.getNodeParameter('identifier', i) as string);
 			const idOrName = this.getNodeParameter('idOrName', i) as string;
-			await HiTechCloudOmnichannelApiRequest.call(
+			await hiTechCloudOmnichannelApiRequest.call(
 				this,
 				'DELETE',
 				`/v1/contacts/${encodeURIComponent(identifier)}/custom-fields/${encodeURIComponent(idOrName)}`,
@@ -603,7 +603,7 @@ async function executeContactOperation(
 			const identifier = normalizeIdentifier(this.getNodeParameter('identifier', i) as string);
 			const tagIds = this.getNodeParameter('tagIds', i, []) as string[];
 			const method: IHttpRequestMethods = operation === 'addTags' ? 'POST' : 'DELETE';
-			await HiTechCloudOmnichannelApiRequest.call(
+			await hiTechCloudOmnichannelApiRequest.call(
 				this,
 				method,
 				`/v1/contacts/${encodeURIComponent(identifier)}/tags`,
@@ -618,7 +618,7 @@ async function executeContactOperation(
 			const inboxId = this.getNodeParameter('inboxId', i, '') as string;
 			const body: IDataObject = { text };
 			if (inboxId) body.inboxId = inboxId;
-			await HiTechCloudOmnichannelApiRequest.call(
+			await hiTechCloudOmnichannelApiRequest.call(
 				this,
 				'POST',
 				`/v1/contacts/${encodeURIComponent(identifier)}/messages`,
@@ -633,7 +633,7 @@ async function executeContactOperation(
 			const inboxId = this.getNodeParameter('inboxId', i, '') as string;
 			const body: IDataObject = { flowId };
 			if (inboxId) body.inboxId = inboxId;
-			await HiTechCloudOmnichannelApiRequest.call(
+			await hiTechCloudOmnichannelApiRequest.call(
 				this,
 				'POST',
 				`/v1/contacts/${encodeURIComponent(identifier)}/flows`,
@@ -655,5 +655,5 @@ async function executeCustomApiCall(this: IExecuteFunctions, i: number): Promise
 	const bodyJson = this.getNodeParameter('body', i, '{}') as string;
 	const body = bodyJson ? (JSON.parse(bodyJson) as IDataObject) : {};
 
-	return (await HiTechCloudOmnichannelApiRequest.call(this, method, path, body)) as IDataObject;
+	return (await hiTechCloudOmnichannelApiRequest.call(this, method, path, body)) as IDataObject;
 }

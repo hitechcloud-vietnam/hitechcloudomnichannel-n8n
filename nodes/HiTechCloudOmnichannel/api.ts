@@ -9,14 +9,14 @@ import type {
 
 export type HiTechCloudOmnichannelContext = IExecuteFunctions | IHookFunctions | ILoadOptionsFunctions;
 
-export async function HiTechCloudOmnichannelApiRequest(
+export async function hiTechCloudOmnichannelApiRequest(
 	this: HiTechCloudOmnichannelContext,
 	method: IHttpRequestMethods,
 	path: string,
 	body: IDataObject = {},
 	qs: IDataObject = {},
 ): Promise<IDataObject> {
-	const credentials = await this.getCredentials('HiTechCloudOmnichannelApi');
+	const credentials = await this.getCredentials('hiTechCloudOmnichannelApi');
 	const baseUrl = (credentials.apiUrl as string).replace(/\/$/, '');
 
 	const options: IHttpRequestOptions = {
@@ -34,7 +34,7 @@ export async function HiTechCloudOmnichannelApiRequest(
 
 	return (await this.helpers.httpRequestWithAuthentication.call(
 		this,
-		'HiTechCloudOmnichannelApi',
+		'hiTechCloudOmnichannelApi',
 		options,
 	)) as IDataObject;
 }

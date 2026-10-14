@@ -5,7 +5,7 @@ const { HiTechCloudOmnichannelApi } = require('../dist/credentials/HiTechCloudOm
 test('HiTechCloudOmnichannelApi authenticates with a Bearer header built from the access token', () => {
 	const credential = new HiTechCloudOmnichannelApi();
 
-	assert.equal(credential.name, 'HiTechCloudOmnichannelApi');
+	assert.equal(credential.name, 'hiTechCloudOmnichannelApi');
 	assert.equal(credential.authenticate.type, 'generic');
 	assert.equal(
 		credential.authenticate.properties.headers.Authorization,

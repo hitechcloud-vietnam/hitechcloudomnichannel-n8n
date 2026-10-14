@@ -7,7 +7,7 @@ import type {
 	IWebhookResponseData,
 } from 'n8n-workflow';
 import { NodeConnectionTypes } from 'n8n-workflow';
-import { HiTechCloudOmnichannelApiRequest } from './api';
+import { hiTechCloudOmnichannelApiRequest } from './api';
 
 type WebhookStaticData = {
 	webhookId?: string;
@@ -16,7 +16,7 @@ type WebhookStaticData = {
 export class HiTechCloudOmnichannelTriggerFlowData implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'HiTechCloudOmnichannel Trigger - Watch Flow Data',
-		name: 'HiTechCloudOmnichannelTriggerFlowData',
+		name: 'hiTechCloudOmnichannelTriggerFlowData',
 		icon: { light: 'file:icons/hitechcloudomnichannel.png', dark: 'file:icons/hitechcloudomnichannel.dark.png' },
 		group: ['trigger'],
 		version: 1,
@@ -27,7 +27,7 @@ export class HiTechCloudOmnichannelTriggerFlowData implements INodeType {
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
-				name: 'HiTechCloudOmnichannelApi',
+				name: 'hiTechCloudOmnichannelApi',
 				required: true,
 			},
 		],
@@ -65,7 +65,7 @@ export class HiTechCloudOmnichannelTriggerFlowData implements INodeType {
 				const webhookUrl = this.getNodeWebhookUrl('default') as string;
 				const eventName = this.getNodeParameter('eventName') as string;
 
-				const response = (await HiTechCloudOmnichannelApiRequest.call(this, 'POST', '/v1/external-webhooks', {
+				const response = (await hiTechCloudOmnichannelApiRequest.call(this, 'POST', '/v1/external-webhooks', {
 					url: webhookUrl,
 					event: eventName,
 					provider: 'n8n',
@@ -84,7 +84,7 @@ export class HiTechCloudOmnichannelTriggerFlowData implements INodeType {
 				}
 
 				try {
-					await HiTechCloudOmnichannelApiRequest.call(
+					await hiTechCloudOmnichannelApiRequest.call(
 						this,
 						'DELETE',
 						`/v1/external-webhooks/${staticData.webhookId}`,

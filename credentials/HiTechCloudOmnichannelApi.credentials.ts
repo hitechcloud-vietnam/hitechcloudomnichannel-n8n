@@ -5,8 +5,8 @@ import type {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export class HiTechCloudOmnichannelXApi implements ICredentialType {
-	name = 'HiTechCloudOmnichannelApi';
+export class HiTechCloudOmnichannelApi implements ICredentialType {
+	name = 'hiTechCloudOmnichannelApi';
 	displayName = 'HiTechCloudOmnichannel API';
 	icon = { light: 'file:../nodes/HiTechCloudOmnichannel/icons/hitechcloudomnichannel.png', dark: 'file:../nodes/HiTechCloudOmnichannel/icons/hitechcloudomnichannel.dark.png' } as const;
 	documentationUrl = 'https://hitechcloud.vn/docs/api-reference/api-overview';

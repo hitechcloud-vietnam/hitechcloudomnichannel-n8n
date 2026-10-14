@@ -12,7 +12,7 @@
         "omnichannel"
     ],
     "author": {
-        "name": "ChatbotXIO",
+        "name": "hitechcloud-vietnam",
         "email": "support@hitechcloud.vn"
     },
     "repository": {
@@ -42,12 +42,12 @@
         "n8nNodesApiVersion": 1,
         "strict": true,
         "credentials": [
-            "dist/credentials/ChatbotXApi.credentials.js"
+            "dist/credentials/HiTechCloudOmnichannelApi.credentials.js"
         ],
         "nodes": [
             "dist/nodes/HiTechCloudOmnichannel/HiTechCloudOmnichannel.node.js",
-            "dist/nodes/HiTechCloudOmnichannel/ChatbotXTriggerEvents.node.js",
-            "dist/nodes/HiTechCloudOmnichannel/ChatbotXTriggerFlowData.node.js"
+            "dist/nodes/HiTechCloudOmnichannel/HiTechCloudOmnichannelTriggerEvents.node.js",
+            "dist/nodes/HiTechCloudOmnichannel/HiTechCloudOmnichannelTriggerFlowData.node.js"
         ]
     },
     "devDependencies": {
