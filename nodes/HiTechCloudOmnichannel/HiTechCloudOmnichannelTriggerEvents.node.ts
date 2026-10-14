@@ -7,7 +7,7 @@ import type {
 	IWebhookResponseData,
 } from 'n8n-workflow';
 import { NodeConnectionTypes } from 'n8n-workflow';
-import { HiTechCloudOmnichannelApiRequest } from './api';
+import { hiTechCloudOmnichannelApiRequest } from './api';
 
 const EVENTS_WITH_SOURCE_ID = new Set([
 	'tagApplied',
@@ -23,7 +23,7 @@ type WebhookStaticData = {
 export class HiTechCloudOmnichannelTriggerEvents implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'HiTechCloudOmnichannel Trigger - Watch Events',
-		name: 'HiTechCloudOmnichannelTriggerEvents',
+		name: 'hiTechCloudOmnichannelTriggerEvents',
 		icon: { light: 'file:icons/hitechcloudomnichannel.png', dark: 'file:icons/hitechcloudomnichannel.dark.png' },
 		group: ['trigger'],
 		version: 1,
@@ -34,7 +34,7 @@ export class HiTechCloudOmnichannelTriggerEvents implements INodeType {
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
-				name: 'HiTechCloudOmnichannelApi',
+				name: 'hiTechCloudOmnichannelApi',
 				required: true,
 			},
 		],
@@ -112,7 +112,7 @@ export class HiTechCloudOmnichannelTriggerEvents implements INodeType {
 					condition.sourceId = sourceId;
 				}
 
-				const response = (await HiTechCloudOmnichannelApiRequest.call(this, 'POST', '/v1/webhooks', {
+				const response = (await hiTechCloudOmnichannelApiRequest.call(this, 'POST', '/v1/webhooks', {
 					name: `n8n: ${event}`,
 					url: webhookUrl,
 					conditions: [condition],
@@ -131,7 +131,7 @@ export class HiTechCloudOmnichannelTriggerEvents implements INodeType {
 				}
 
 				try {
-					await HiTechCloudOmnichannelApiRequest.call(this, 'DELETE', `/v1/webhooks/${staticData.webhookId}`);
+					await hiTechCloudOmnichannelApiRequest.call(this, 'DELETE', `/v1/webhooks/${staticData.webhookId}`);
 				} catch (error) {
 					// Webhook may already be gone (deleted manually, workspace cleanup, etc.) —
 					// don't block deactivation on it, but don't hide it either.
